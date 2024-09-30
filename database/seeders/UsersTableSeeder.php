@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class UsersTableSeeder extends Seeder
 {
@@ -13,9 +14,10 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $teacherRoleID = DB::table('roles')->get()->where('role', 'teacher')->first()->id;
-        $studentRoleID = DB::table('roles')->get()->where('role', 'student')->first()->id;
-        DB::table('users')->insert([
+        $studentRoleID = Role::where('role', 'student')->first()->id;
+        $teacherRoleID = Role::where('role', 'teacher')->first()->id;
+
+        $users = [
             [
                 'name' => "admin",
                 's_number' => "s12345",
@@ -128,6 +130,9 @@ class UsersTableSeeder extends Seeder
                 'email' => 'terry@fakelearner.com',
                 'password' => bcrypt('Admin123'),
             ]
-        ]);
+        ];
+        foreach ($users as $user) {
+            User::create($user);
+        }
     }
 }

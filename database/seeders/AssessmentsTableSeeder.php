@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Assessment;
+use App\Models\Course;
+use App\Models\ReviewType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class AssessmentsTableSeeder extends Seeder
 {
@@ -13,10 +15,11 @@ class AssessmentsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $types = DB::table('reviewtypes')->get();
-        $courseID = DB::table('courses')->get()->where('course_code', '7005ICT')->first()->id;
+        $courseID = Course::find(1)->id;
+        $types = ReviewType::all();
+
         foreach ($types as $index => $type) {
-            DB::table('assessments')->insert([
+            Assessment::create(
                 [
                     'title' => "Week $index Peer Review",
                     'instruction' => 'Lorem ipsum',
@@ -26,7 +29,7 @@ class AssessmentsTableSeeder extends Seeder
                     'course_id' => $courseID,
                     'type_id' => $type->id,
                 ]
-            ]);
+            );
         }
     }
 }

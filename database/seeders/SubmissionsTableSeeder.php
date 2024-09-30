@@ -2,10 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\Assessment;
+use App\Models\Course;
+use App\Models\Enrolment;
+use App\Models\Submission;
 use Dotenv\Parser\Entry;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class SubmissionsTableSeeder extends Seeder
 {
@@ -16,18 +19,18 @@ class SubmissionsTableSeeder extends Seeder
     {
         $entries = [];
 
-        $assessments = DB::table('assessments')->get();
+        $assessments = Assessment::all();
 
         // For each assessment, find the related enrolments.
         foreach ($assessments as $assessment) {
-            $courseID = DB::table('courses')->get()->where('id', $assessment->course_id)->first()->id;
+            $course = Course::find(1);
+            $enrolments = $course->enrolments()->get();
 
-            $enrolments = DB::table('enrolments')
-                ->join('users', 'enrolments.user_id', '=', 'users.id')
+            $enrolments =  Enrolment::join('users', 'enrolments.user_id', '=', 'users.id')
                 ->join('roles', 'users.role_id', '=', 'roles.id')
                 ->where('roles.role', 'student')
-                ->where('enrolments.course_id', $courseID)
-                ->where('course_id', $courseID)
+                ->where('enrolments.course_id', $course->id)
+                ->where('course_id', $course->id)
                 ->select('enrolments.user_id')
                 ->get();
 
@@ -41,6 +44,8 @@ class SubmissionsTableSeeder extends Seeder
             }
         }
 
-        DB::table('submissions')->insert($entries);
+        foreach ($entries as $entry) {
+            Submission::create($entry);
+        }
     }
 }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->unsignedBigInteger('role_id');
             $table->foreign('role_id')->references('id')->on('roles');
+            $table->boolean('is_activated')->default(false); // False for upload-file students who still need to set a password manually
             $table->rememberToken();
             $table->timestamps();
         });

@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\ReviewType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class ReviewTypesTableSeeder extends Seeder
 {
@@ -13,10 +13,16 @@ class ReviewTypesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('reviewtypes')->insert([[
-            'type' => 'teacher_assign',
-        ], [
-            'type' => 'student_select',
-        ]]);
+        $types = [
+            [
+                'type' => 'teacher_assign',
+            ],
+            [
+                'type' => 'student_select',
+            ]
+        ];
+        foreach ($types as $type) {
+            ReviewType::create($type);
+        }
     }
 }

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('course_id');
             $table->foreign('course_id')->references('id')->on('courses');
             $table->unsignedBigInteger('type_id');
-            $table->foreign('type_id')->references('id')->on('reviewtypes');
+            $table->foreign('type_id')->references('id')->on('review_types');
             $table->timestamps();
         });
     }
