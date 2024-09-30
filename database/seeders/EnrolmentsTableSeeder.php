@@ -2,9 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Course;
+use App\Models\Enrolment;
+use App\Models\Role;
+use App\Models\Workshop;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class EnrolmentsTableSeeder extends Seeder
 {
@@ -13,26 +16,25 @@ class EnrolmentsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $teacherRoleID = DB::table('roles')->get()->where('role', 'teacher')->first()->id;
-        $studentRoleID = DB::table('roles')->get()->where('role', 'student')->first()->id;
+        $teacherRole = Role::where('role', 'teacher')->first();
+        $studentRole = Role::where('role', 'student')->first();
+        $students = $studentRole->users()->get();
+        $teacher = $teacherRole->users()->first();
 
-        $students = DB::table('users')->where('role_id', $studentRoleID)->get();
-        $teacher = DB::table('users')->where('role_id', $teacherRoleID)->get()->first();
-
-        $workshops = DB::table('workshops')->limit(2)->get();
-        $courseID = DB::table('courses')->get()->where('course_code', '7005ICT')->first()->id;
+        $workshops = Workshop::limit(2)->get();
+        $courseID = Course::find(1)->id;
 
         foreach ($students as $index => $student) {
-            DB::table('enrolments')->insert([
+            Enrolment::create(
                 [
                     'user_id' => $student->id,
                     'course_id' => $courseID,
                     'workshop_id' => $workshops[$index % 2 == 0 ? 1 : 0]->id,
                 ]
-            ]);
+            );
         }
 
-        DB::table('enrolments')->insert([
+        $teacherEnrolments = [
             [
                 'user_id' => $teacher->id,
                 'course_id' => $courseID,
@@ -43,6 +45,10 @@ class EnrolmentsTableSeeder extends Seeder
                 'course_id' => $courseID,
                 'workshop_id' => $workshops[1]->id,
             ]
-        ]);
+        ];
+
+        foreach ($teacherEnrolments as $enrolment) {
+            Enrolment::create($enrolment);
+        }
     }
 }

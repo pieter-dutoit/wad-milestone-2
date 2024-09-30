@@ -21,12 +21,28 @@ class User extends Authenticatable
         'email',
         'password',
         's_number',
-        'role_id'
+        'role_id',
+        'is_activated'
     ];
 
     function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    function enrolments()
+    {
+        return $this->hasMany(Enrolment::class);
+    }
+
+    function submissions()
+    {
+        return $this->hasMany(Submission::class);
+    }
+
+    function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 
     /**

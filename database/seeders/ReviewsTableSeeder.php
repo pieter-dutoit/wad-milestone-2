@@ -2,9 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\Assessment;
+use App\Models\Enrolment;
+use App\Models\Review;
+use App\Models\Submission;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class ReviewsTableSeeder extends Seeder
 {
@@ -13,52 +17,44 @@ class ReviewsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $entries = [];
-
-        $assessments = DB::table('assessments')
-            ->join('reviewtypes', 'reviewtypes.id', '=', 'assessments.type_id')
-            ->get();
-
+        $assessments = Assessment::all();
 
         foreach ($assessments as $assessment) {
-            // Find all students (possible reviewees) of this assessment
-            $allStudents = DB::table('enrolments')
-                ->join('users', 'enrolments.user_id', '=', 'users.id')
-                ->join('roles', 'users.role_id', '=', 'roles.id')
-                ->where('enrolments.course_id', $assessment->course_id)
-                ->where('roles.role', 'student')
-                ->select('enrolments.user_id', 'enrolments.workshop_id', 'users.name')
-                ->get();
+            // $type = $assessment->type()->get()->first()->type;
+            // https://laravel.com/docs/11.x/eloquent-relationships#relationship-methods-vs-dynamic-properties
+            $type = $assessment->type->type;
+            $submissions = $assessment->submissions;
 
 
-            if ($assessment->type == 'student_select') {
-                foreach ($allStudents as $student) {
-                    $submissionID = DB::table('submissions')
-                        ->where('student_id', $student->user_id)
-                        ->where('assessment_id', $assessment->id)
-                        ->get()
-                        ->first()
-                        ->id;
+            if ($type == 'student_select') {
+                foreach ($submissions as $submission) {
+                    // Create reviews without reviewees
                     for ($i = 0; $i < $assessment->num_reviews; $i++) {
-                        $entries[] =
-                            [
-                                'reviewee_id' => null,
-                                'submission_id' => $submissionID
-                            ];
+                        Review::create([
+                            'reviewee_id' => null,
+                            'submission_id' => $submission->id
+                        ]);
                     }
                 }
             }
 
-            if ($assessment->type == 'teacher_assign') {
-                // Group reviewees by workshop
+            if ($type == 'teacher_assign') {
+                // https://laravel.com/docs/11.x/eloquent-relationships#querying-relationship-existence
+                // https://stackoverflow.com/questions/30231862/laravel-eloquent-has-with-wherehas-what-do-they-mean
+                $enrolments = Enrolment::where('course_id', $assessment->course_id)
+                    ->whereHas('user.role', function ($query) {
+                        $query->where('role', '=', 'student');
+                    })->get();
+
+                // Groups students for reviews, if teacher_assigned set
+                $allGroups = [];
+                // Groups enrolments based on workshops
                 $studentsByWorkshop = [];
-                foreach ($allStudents as $index => $student) {
-                    $studentsByWorkshop[$student->workshop_id][] = $student;
+                foreach ($enrolments as $index => $enrolment) {
+                    $studentsByWorkshop[$enrolment->workshop_id][] = $enrolment;
                 }
 
-                // Randomly place workshop students into groups
-                $allGroups = [];
-                // Create review groups for all workshops
+                // Break students in workshops into groups
                 foreach ($studentsByWorkshop as $workshopStudents) {
                     $workshopGroups = [];
                     shuffle($workshopStudents);
@@ -78,98 +74,27 @@ class ReviewsTableSeeder extends Seeder
                     $allGroups = array_merge($allGroups, $workshopGroups);
                 }
 
-                // Create review entries for each student
+                // Create review based on groups
                 foreach ($allGroups as $group) {
-                    foreach ($group as $reviewerIndex => $reviewer) {
-                        $submissionID = DB::table('submissions')
-                            ->where('student_id', $reviewer->user_id)
+                    echo count($group);
+                    foreach ($group as $reviewer) {
+                        $submissionID = Submission::where('student_id', $reviewer->user_id)
                             ->where('assessment_id', $assessment->id)
                             ->get()
                             ->first()
                             ->id;
-                        foreach ($group as $revieweeIndex => $reviewee) {
-                            if ($reviewerIndex != $revieweeIndex) {
-                                $entries[] = [
+                        foreach ($group as $reviewee) {
+                            if ($reviewee->id != $submissionID) {
+                                Review::create([
                                     'reviewee_id' => $reviewee->user_id,
                                     'submission_id' => $submissionID
-                                ];
+                                ]);
                             }
                         }
                     }
                 }
+                // End
             }
         }
-
-        DB::table('reviews')->insert($entries);
-
-        // Find submissions and join assessment to get review count
-        // $submissions = DB::table('submissions')
-        //     ->join('assessments', 'submissions.assessment_id', '=', 'assessments.id')
-        //     ->join('reviewtypes', 'reviewtypes.id', '=', 'assessments.type_id')
-        //     ->select('submissions.id', 'submissions.student_id', 'assessments.num_reviews', 'reviewtypes.type', 'assessments.course_id')
-
-        //     // ->where('roles.role', 'student')
-        //     // ->where('enrolments.course_id', $courseID)
-        //     // ->where('course_id', $courseID)
-        //     // ->select('enrolments.user_id')
-        //     ->get();
-
-        // foreach ($submissions as $submission) {
-        //     // Find all other students (possible reviewees) also enrolled in the same course
-        //     $allStudents = DB::table('enrolments')
-        //         ->join('users', 'enrolments.user_id', '=', 'users.id')
-        //         ->join('roles', 'users.role_id', '=', 'roles.id')
-        //         ->where('roles.role', 'student')
-        //         ->where('enrolments.course_id', $submission->course_id)
-        //         ->whereNot('enrolments.user_id', $submission->student_id)
-        //         ->select('enrolments.user_id', 'enrolments.workshop_id', 'users.name')
-        //         ->get();
-
-        //     // Group reviewees by workshop
-        //     $studentsByWorkshop = [];
-        //     foreach ($allStudents as $index => $reviewee) {
-        //         $studentsByWorkshop[$reviewee->workshop_id][] = $reviewee;
-        //     }
-
-
-
-        //     if ($submission->type == 'teacher_assign') {
-        //         $allGroups = [];
-        //         // Create review groups for all workshops
-        //         foreach ($studentsByWorkshop as $reviewees) {
-        //             $workshopGroups = [];
-        //             shuffle($reviewees);
-        //             $groupSize = $submission->num_reviews + 1;
-        //             $numGroups = intVal(floor(count($reviewees) / $groupSize));
-
-        //             // Create at least one group
-        //             for ($i = 0; $i < ($numGroups > 0 ? $numGroups : 1); $i++) {
-        //                 $workshopGroups[] = [];
-        //             }
-
-        //             foreach ($reviewees as $index => $reviewee) {
-        //                 $groupIndex = $index % count($workshopGroups);
-        //                 $workshopGroups[$groupIndex][] = $reviewee;
-        //             }
-
-        //             $allGroups = array_merge($allGroups, $workshopGroups);
-        //         }
-
-
-        //         foreach ($allGroups as $group) {
-        //             foreach ($group as $index => $student) {
-        //             }
-        //         }
-        //     }
-
-
-
-
-        // for ($i = 0; $i < $submission->num_reviews; $i++) {
-        //     $entries[] = [
-        //         'submission_id' => $submission->id
-        //     ];
-        // }
-        // }
     }
 }

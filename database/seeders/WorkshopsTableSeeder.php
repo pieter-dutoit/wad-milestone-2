@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Workshop;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class WorkshopsTableSeeder extends Seeder
 {
@@ -13,7 +13,7 @@ class WorkshopsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('workshops')->insert([
+        $workshops = [
             [
                 'day' => 'Monday',
                 'location' => 'Online',
@@ -30,6 +30,10 @@ class WorkshopsTableSeeder extends Seeder
                 'day' => 'Tuesday',
                 'location' => 'NA 16.2.2',
             ]
-        ]);
+        ];
+
+        foreach ($workshops as $key => $workshop) {
+            Workshop::create($workshop);
+        }
     }
 }
