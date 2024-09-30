@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -24,11 +25,26 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
 
-        $request->session()->regenerate();
+        // https://laravel.com/docs/7.x/authentication#authenticating-users
+        // https://stackoverflow.com/questions/39639400/laravel-auth-custom-fields
+        // $request->validate([
+        //     's_number' => ['required', 'string'], // Don't validate too much, user should know their s number and password
+        //     'password' => ['required', 'string'],
+        // ]);
 
-        return redirect()->intended(route('dashboard', absolute: false));
+
+        $credentials = $request->only('s_number', 'password');
+
+        if (Auth::attempt($credentials)) {
+            // Authentication passed...
+            return redirect()->intended('dashboard');
+        } else {
+            // Based on error handling in ConfirmablePasswordController
+            throw ValidationException::withMessages([
+                'password' => 'Invalid login credentials',
+            ]);
+        }
     }
 
     /**
