@@ -25,15 +25,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-
         // https://laravel.com/docs/7.x/authentication#authenticating-users
-        // https://stackoverflow.com/questions/39639400/laravel-auth-custom-fields
-        // $request->validate([
-        //     's_number' => ['required', 'string'], // Don't validate too much, user should know their s number and password
-        //     'password' => ['required', 'string'],
-        // ]);
-
-
         $credentials = $request->only('s_number', 'password');
 
         if (Auth::attempt($credentials)) {
