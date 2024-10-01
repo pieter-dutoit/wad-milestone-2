@@ -17,4 +17,12 @@ class Course extends Model
     {
         return $this->hasMany(Assessment::class);
     }
+    function users()
+    {
+        return $this->belongsToMany(User::class, 'enrolments')->withPivot('workshop_id');
+    }
+    function workshops()
+    {
+        return $this->belongsToMany(Workshop::class, 'enrolments')->withPivot('workshop_id', 'user_id');
+    }
 }

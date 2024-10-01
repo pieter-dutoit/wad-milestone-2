@@ -45,6 +45,11 @@ class User extends Authenticatable
         return $this->hasMany(Review::class);
     }
 
+    function courses()
+    {
+        return $this->belongsToMany(Course::class, 'enrolments')->withPivot('workshop_id', 'user_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

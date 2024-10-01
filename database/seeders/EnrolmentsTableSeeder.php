@@ -21,29 +21,42 @@ class EnrolmentsTableSeeder extends Seeder
         $students = $studentRole->users()->get();
         $teacher = $teacherRole->users()->first();
 
-        $workshops = Workshop::limit(2)->get();
-        $courseID = Course::find(1)->id;
+        $workshops = Workshop::limit(4)->get();
+        $courses = Course::limit(2)->get();
 
-        foreach ($students as $index => $student) {
-            Enrolment::create(
-                [
-                    'user_id' => $student->id,
-                    'course_id' => $courseID,
-                    'workshop_id' => $workshops[$index % 2 == 0 ? 1 : 0]->id,
-                ]
-            );
+        foreach ($courses as $course) {
+
+            foreach ($students as $index => $student) {
+
+                Enrolment::create(
+                    [
+                        'user_id' => $student->id,
+                        'course_id' => $course->id,
+                        'workshop_id' => $workshops[$index % 2 == 0 ? 1 : 0]->id,
+                    ]
+                );
+            }
         }
-
         $teacherEnrolments = [
             [
                 'user_id' => $teacher->id,
-                'course_id' => $courseID,
+                'course_id' => $courses[0]->id,
                 'workshop_id' => $workshops[0]->id,
             ],
             [
                 'user_id' => $teacher->id,
-                'course_id' => $courseID,
+                'course_id' => $courses[0]->id,
                 'workshop_id' => $workshops[1]->id,
+            ],
+            [
+                'user_id' => $teacher->id,
+                'course_id' => $courses[1]->id,
+                'workshop_id' => $workshops[2]->id,
+            ],
+            [
+                'user_id' => $teacher->id,
+                'course_id' => $courses[1]->id,
+                'workshop_id' => $workshops[3]->id,
             ]
         ];
 
