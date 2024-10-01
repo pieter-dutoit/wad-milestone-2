@@ -8,9 +8,13 @@
     This page lists all course details including the teaching staff, and assessments.
 @endsection
 
-
-
 @section('content')
+
+    @if (Auth::user()->role->role == 'teacher')
+        <a href="{{ url("enrolments/create?course=$course->id") }}">Enrol a Student</a>
+        <a href="{{ url("assessments/create?course=$course->id") }}">Create Peer Review Assessment</a>
+    @endif
+
     <ul>
         <li>{{ $course->course_name }}</li>
         <li>{{ $course->course_code }}</li>
@@ -36,12 +40,12 @@
     </ul>
 
 
-    <h4>Teachers:</h4>
+    <h4>Peer Review Assessments:</h4>
 
     <ul>
         @forelse ($course->assessments as $assessment)
             <li>
-                <a href="{{ url('assessment', [$assessment->id]) }}">{{ $assessment->title }}</a>
+                <a href="{{ url('assessments', [$assessment->id]) }}">{{ $assessment->title }}</a>
                 <p>Due date: {{ $assessment->due_date }}</p>
             </li>
         @empty

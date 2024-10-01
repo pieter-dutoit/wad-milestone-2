@@ -6,7 +6,6 @@ use App\Models\Assessment;
 use App\Models\Enrolment;
 use App\Models\Review;
 use App\Models\Submission;
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -76,7 +75,6 @@ class ReviewsTableSeeder extends Seeder
 
                 // Create review based on groups
                 foreach ($allGroups as $group) {
-                    echo count($group);
                     foreach ($group as $reviewer) {
                         $submissionID = Submission::where('student_id', $reviewer->user_id)
                             ->where('assessment_id', $assessment->id)

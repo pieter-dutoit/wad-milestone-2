@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\Enrolment;
+use App\Models\User;
+use App\Models\Workshop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +26,21 @@ class EnrolmentController extends Controller
      */
     public function create()
     {
-        //
+        $courseID = $_REQUEST['course'];
+        $workshops = Workshop::all();
+        $course = Course::find($courseID);
+        $students = User::whereHas('role', function ($query) {
+            $query->where('role', 'student');
+        })
+            ->whereDoesntHave('enrolments', function ($query) use ($courseID) {
+                $query->where('course_id', $courseID);
+            })
+            ->get();
+
+        return view('enrolments.create_form')
+            ->with('course', $course)
+            ->with('workshops', $workshops)
+            ->with('students', $students);
     }
 
     /**
@@ -30,7 +48,21 @@ class EnrolmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'student' => 'required|exists:users,id',
+            'workshop' => 'required|exists:workshops,id'
+        ]);
+
+        $enrolment = Enrolment::create([
+            'user_id' => $request->student,
+            'workshop_id' => $request->workshop,
+            'course_id' => $request->course_id
+        ]);
+
+        $enrolment->save();
+
+        return redirect("courses/$request->course_id");
     }
 
     /**

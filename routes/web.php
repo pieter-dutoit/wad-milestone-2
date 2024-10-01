@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrolmentController;
 use App\Http\Controllers\ProfileController;
@@ -34,10 +35,7 @@ Route::middleware('auth')->group(function () {
     // Custom:
     Route::resource('enrolments', EnrolmentController::class);
     Route::resource('courses', CourseController::class);
+    Route::resource('assessments', AssessmentController::class);
 });
-
-// Route::resource('enrolments', EnrolmentController::class);
-
-
 
 require __DIR__ . '/auth.php';
