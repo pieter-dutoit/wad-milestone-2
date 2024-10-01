@@ -92,6 +92,4 @@
 
         <button type="submit">Create assessment</button>
     </form>
-
-    {{ $errors }}
 @endsection

@@ -29,6 +29,12 @@ class EnrolmentController extends Controller
         $courseID = $_REQUEST['course'];
         $workshops = Workshop::all();
         $course = Course::find($courseID);
+
+        if ($course == null) {
+            session()->flash('warning', 'The selected course does not exist.');
+            return redirect(route('enrolments.index'));
+        }
+
         $students = User::whereHas('role', function ($query) {
             $query->where('role', 'student');
         })
@@ -62,6 +68,8 @@ class EnrolmentController extends Controller
 
         $enrolment->save();
 
+
+        session()->flash('success', 'The enrolment has been created successfully.');
         return redirect("courses/$request->course_id");
     }
 

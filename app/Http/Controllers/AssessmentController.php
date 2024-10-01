@@ -12,14 +12,6 @@ use Illuminate\Http\Request;
 class AssessmentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -27,6 +19,11 @@ class AssessmentController extends Controller
         $courseID = $_REQUEST['course'];
         $types = ReviewType::all();
         $course = Course::find($courseID);
+
+        if ($course == null) {
+            session()->flash('warning', 'The selected course does not exist.');
+            return redirect(route('enrolments.index'));
+        }
 
         return view('assessments.create_form')
             ->with('course', $course)
@@ -136,6 +133,7 @@ class AssessmentController extends Controller
             }
         }
 
+        session()->flash('success', 'The assessment has been created successfully.');
         return redirect("assessments/$assessment->id");
     }
 
@@ -145,7 +143,7 @@ class AssessmentController extends Controller
     public function show(string $id)
     {
         $assessment = Assessment::find($id);
-        dd($assessment);
+        return view('assessments.show')->with('assessment', $assessment);
     }
 
     /**

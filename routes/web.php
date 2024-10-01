@@ -4,6 +4,7 @@ use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrolmentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\VerifyUserRole;
 use App\Models\Course;
 use App\Models\Workshop;
 use Illuminate\Support\Facades\Route;
@@ -32,10 +33,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    // Custom:
-    Route::resource('enrolments', EnrolmentController::class);
-    Route::resource('courses', CourseController::class);
-    Route::resource('assessments', AssessmentController::class);
+
+    // Course Routes
+    Route::get('/courses/{id}', [CourseController::class, 'show'])->middleware('role:teacher,student');
+
+    // Enrolment Routes
+    Route::get('/enrolments', [EnrolmentController::class, 'index'])
+        ->name('enrolments.index')
+        ->middleware('role:teacher,student');
+    Route::get('/enrolments/create', [EnrolmentController::class, 'create'])->middleware('role:teacher');
+    Route::post('/enrolments', [EnrolmentController::class, 'store'])->middleware('role:teacher');
+
+    // Assessment Routes
+    Route::get('/assessments', [AssessmentController::class, 'index'])->middleware('role:teacher');
+    Route::get('/assessments/create', [AssessmentController::class, 'create'])->middleware('role:teacher');
+    Route::post('/assessments', [AssessmentController::class, 'store'])->middleware('role:teacher');
+    Route::get('/assessments/{id}', [AssessmentController::class, 'show'])->middleware('role:teacher');
 });
 
 require __DIR__ . '/auth.php';

@@ -12,4 +12,16 @@
             </li>
         @endauth
     </ul>
+
+    @if (session()->has('warning'))
+        <strong>
+            {{ session('warning') }}
+        </strong>
+    @endif
+
+    @if (session()->has('success'))
+        <strong>
+            {{ session('success') }}
+        </strong>
+    @endif
 </nav>
