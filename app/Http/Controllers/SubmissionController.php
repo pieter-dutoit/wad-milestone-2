@@ -41,7 +41,8 @@ class SubmissionController extends Controller
      */
     public function show(string $id)
     {
-        dd('show');
+        $submission = Submission::find($id);
+        return view('submissions.show')->with('submission', $submission);
     }
 
     /**
@@ -49,6 +50,7 @@ class SubmissionController extends Controller
      */
     public function edit(string $id)
     {
+        $isTeacher = Auth::user()->role->role == 'teacher';
         $submission = Submission::find($id);
         $assessment_id = $submission->assessment->id;
 
@@ -58,11 +60,10 @@ class SubmissionController extends Controller
         $isLate = $due_date < $current_date;
 
         // Hidden review count:
-        $hiddenCount = Auth::user()->reviews
+        $reviewsReceived = $submission->student->reviews
             ->where('complete',  true)
             ->where('submission.assessment_id', $submission->assessment_id)
-            ->where('submission.id', '!=', $submission->id)
-            ->count();
+            ->where('submission.id', '!=', $submission->id);
 
         // Find reviewees in the same workshop, excluding this user
         $workshopPeers = User::whereHas('submissions', function ($query) use ($assessment_id, $submission) {
@@ -72,8 +73,9 @@ class SubmissionController extends Controller
         return view('submissions.edit_form')
             ->with('submission', $submission)
             ->with('isLate', $isLate)
-            ->with('hiddenCount', $hiddenCount)
-            ->with('peers', $workshopPeers);
+            ->with('reviewsReceived', $reviewsReceived)
+            ->with('peers', $workshopPeers)
+            ->with('isTeacher', $isTeacher);
     }
 
     /**
@@ -81,6 +83,31 @@ class SubmissionController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $isTeacher = Auth::user()->role->role == 'teacher';
+
+        if ($isTeacher) {
+            // Set the score
+            $submission = Submission::find($id);
+            $maxScore = $submission->assessment->max_score;
+
+            $scoreValidator = Validator::make($request->all(), [
+                'score' => "required|numeric|min:0|max:$maxScore"
+            ]);
+
+            if ($scoreValidator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($scoreValidator)
+                    ->withInput();
+            }
+
+            $submission->score = $request->score;
+            $submission->save();
+            session()->flash('success', 'The student score has been assigned successfully!');
+            return redirect("submissions/$submission->id/edit");
+        }
+
+        // Save student reviews:
         $allFields = $request->all();
 
         // Get id's of all reviews marked as unavailable by the reviewer.
@@ -176,6 +203,7 @@ class SubmissionController extends Controller
         $submission->date_submitted = new DateTime();
         $submission->save();
 
+        session()->flash('success', 'Your reviews have been submitted successfully!.');
         return redirect("submissions/$submission->id");
     }
 

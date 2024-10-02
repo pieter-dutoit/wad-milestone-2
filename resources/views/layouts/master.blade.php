@@ -17,8 +17,7 @@
     <header>
         @include('layouts.navbar')
         <h1>@yield('title')</h1>
-        <p>@yield('description')</p>
-
+        <div>@yield('description')</div>
     </header>
 
     <main>

@@ -17,7 +17,7 @@ class EnrolmentController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $enrolments = $user->enrolments;
+        $enrolments = $user->enrolments->unique('course_id');
         return view('enrolments.index')->with('enrolments', $enrolments);
     }
 

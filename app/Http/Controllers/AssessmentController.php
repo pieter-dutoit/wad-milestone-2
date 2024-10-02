@@ -8,6 +8,7 @@ use App\Models\Review;
 use App\Models\ReviewType;
 use App\Models\Submission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AssessmentController extends Controller
 {
@@ -143,7 +144,42 @@ class AssessmentController extends Controller
     public function show(string $id)
     {
         $assessment = Assessment::find($id);
-        return view('assessments.show')->with('assessment', $assessment);
+
+        $PAGE_SIZE = 10;
+        $page = $_REQUEST['page'] ?? 1;
+        $offset = ($page - 1) * $PAGE_SIZE;
+
+        $totalStudents = $assessment->course->users->where('role.role', 'student')->count();
+        $numPages = ceil($totalStudents / $PAGE_SIZE);
+
+        $teachers = $assessment->course->users->where('role.role', 'teacher')->unique();
+        $students = $assessment->course->users->where('role.role', 'student')->skip($offset)->take($PAGE_SIZE);
+        $course = $assessment->course;
+
+        $userId = Auth::user()->id;
+
+        $canViewPage = false;
+        foreach ($teachers as $teacher) {
+            if ($teacher->id == $userId) {
+                $canViewPage = true;
+            }
+        }
+
+        if (!$canViewPage) {
+            session()->flash('warning', 'You need to be a course teacher to view this assessment.');
+            return redirect(route('enrolments.index'));
+        }
+
+        // lock for editing if not yet any
+        $submittedReviewCount = $assessment->submissions->where('date_submitted', '!=', null)->count();
+
+        return view('assessments.show')
+            ->with('assessment', $assessment)
+            ->with('course', $course)
+            ->with('students', $students)
+            ->with('submittedReviewCount', $submittedReviewCount)
+            ->with('prevPage', $page > 1 ? $page - 1 : 1)
+            ->with('nextPage', $page < $numPages ? $page + 1 : $numPages);
     }
 
     /**
@@ -151,7 +187,13 @@ class AssessmentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $assessment = Assessment::find($id);
+        $submittedReviewCount = $assessment->submissions->where('date_submitted', '!=', null)->count();
+
+        if ($submittedReviewCount > 0) {
+            session()->flash('warning', 'This assessment cannot be edited, because it has one or more submissions.');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -159,7 +201,13 @@ class AssessmentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $assessment = Assessment::find($id);
+        $submittedReviewCount = $assessment->submissions->where('date_submitted', '!=', null)->count();
+
+        if ($submittedReviewCount > 0) {
+            session()->flash('warning', 'This assessment cannot be edited, because it has one or more submissions.');
+            return redirect()->back();
+        }
     }
 
     /**

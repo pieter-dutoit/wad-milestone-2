@@ -5,26 +5,23 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrolmentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubmissionController;
-use App\Http\Middleware\VerifyUserRole;
-use App\Models\Course;
-use App\Models\Workshop;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/test', function () {
-    $course = Course::find(2);
-    $users = $course->users->where('role.role', 'teacher')->unique('id');
-    dd($users);
+// Route::get('/test', function () {
+//     $course = Course::find(2);
+//     $users = $course->users->where('role.role', 'teacher')->unique('id');
+//     dd($users);
 
-    $data = [];
+//     $data = [];
 
-    foreach ($users as $user) {
-        $workshop = Workshop::find($user->pivot->workshop_id);
-        $data[$user->id] = [$user, $workshop];
-        // echo ($workshop->location);
-    }
+//     foreach ($users as $user) {
+//         $workshop = Workshop::find($user->pivot->workshop_id);
+//         $data[$user->id] = [$user, $workshop];
+//         // echo ($workshop->location);
+//     }
 
-    dd($data);
-});
+//     dd($data);
+// });
 
 Route::get('/', function () {
     return redirect(route('enrolments.index'));
@@ -50,11 +47,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/assessments/create', [AssessmentController::class, 'create'])->middleware('role:teacher');
     Route::post('/assessments', [AssessmentController::class, 'store'])->middleware('role:teacher');
     Route::get('/assessments/{id}', [AssessmentController::class, 'show'])->middleware('role:teacher');
+    Route::get('/assessments/{id}/edit', [AssessmentController::class, 'edit'])->middleware('role:teacher');
 
     // Submission Routes
     Route::get('/submissions/{id}', [SubmissionController::class, 'show'])->middleware('role:student');
-    Route::get('/submissions/{id}/edit', [SubmissionController::class, 'edit'])->middleware('role:student');
-    Route::put('/submissions/{id}', [SubmissionController::class, 'update'])->middleware('role:student');
+    Route::get('/submissions/{id}/edit', [SubmissionController::class, 'edit'])->middleware('role:student,teacher');
+    Route::put('/submissions/{id}', [SubmissionController::class, 'update'])->middleware('role:student,teacher');
 });
 
 require __DIR__ . '/auth.php';

@@ -5,9 +5,9 @@
 @endsection
 
 @section('description')
-    This page lists all courses that you {{ Auth::user()->role->role == 'teacher' ? 'teach' : 'are enrolled in' }}. Select a
-    course to view its
-    details.
+    This page lists all courses that you
+    {{ Auth::user()->role->role == 'teacher' ? 'teach' : 'are enrolled in' }}.
+    Select a course to view its details.
 @endsection
 
 @section('content')
@@ -15,8 +15,8 @@
         @forelse ($enrolments as $enrolment)
             <li>
                 <a href="{{ url('courses', [$enrolment->course->id]) }}">
-                    {{ $enrolment->course->course_name }}, {{ $enrolment->workshop->location }},
-                    {{ $enrolment->workshop->day }}
+                    {{ $enrolment->course->course_name }}
+                    {{ $enrolment->course->course_code }}
                 </a>
 
             </li>
