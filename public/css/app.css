@@ -1,0 +1,38 @@
+.no-student-teacher_assign > input,
+.no-student-teacher_assign > label,
+.choose-other-student {
+    display: none;
+}
+
+.absent-student-teacher_assign
+    > input:checked
+    ~ .no-student-teacher_assign
+    > input,
+.absent-student-teacher_assign
+    > input:checked
+    ~ .no-student-teacher_assign
+    > label,
+.absent-student-teacher_assign
+    > input:checked
+    ~ .no-student-teacher_assign
+    > .choose-other-student {
+    display: block;
+}
+
+.absent-student-teacher_assign
+    > input:checked
+    ~ .no-student-teacher_assign
+    > input:checked
+    ~ .review-inputs {
+    display: none;
+}
+
+.absent-student-student_select > input,
+.absent-student-student_select > label,
+.absent-student-student_select .choose-other-student {
+    display: none;
+}
+
+.no-student-student_select > input:checked ~ .review-inputs {
+    display: none;
+}

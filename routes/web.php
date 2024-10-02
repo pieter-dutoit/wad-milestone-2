@@ -4,6 +4,7 @@ use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrolmentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubmissionController;
 use App\Http\Middleware\VerifyUserRole;
 use App\Models\Course;
 use App\Models\Workshop;
@@ -49,6 +50,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/assessments/create', [AssessmentController::class, 'create'])->middleware('role:teacher');
     Route::post('/assessments', [AssessmentController::class, 'store'])->middleware('role:teacher');
     Route::get('/assessments/{id}', [AssessmentController::class, 'show'])->middleware('role:teacher');
+
+    // Submission Routes
+    Route::get('/submissions/{id}', [SubmissionController::class, 'show'])->middleware('role:student');
+    Route::get('/submissions/{id}/edit', [SubmissionController::class, 'edit'])->middleware('role:student');
+    Route::put('/submissions/{id}', [SubmissionController::class, 'update'])->middleware('role:student');
 });
 
 require __DIR__ . '/auth.php';

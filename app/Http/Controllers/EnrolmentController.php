@@ -37,11 +37,9 @@ class EnrolmentController extends Controller
 
         $students = User::whereHas('role', function ($query) {
             $query->where('role', 'student');
-        })
-            ->whereDoesntHave('enrolments', function ($query) use ($courseID) {
-                $query->where('course_id', $courseID);
-            })
-            ->get();
+        })->whereDoesntHave('enrolments', function ($query) use ($courseID) {
+            $query->where('course_id', $courseID);
+        })->get();
 
         return view('enrolments.create_form')
             ->with('course', $course)
@@ -94,7 +92,7 @@ class EnrolmentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        dd($request);
     }
 
     /**

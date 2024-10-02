@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->text('text')->default('');
-            $table->dateTime('date_submitted')->nullable();
-            $table->boolean('reviewee_verified')->default(false);
+            $table->boolean('complete')->default(false);
+            $table->boolean('unavailable')->default(false);
+            $table->boolean('reported')->default(false);
             $table->unsignedBigInteger('reviewee_id')->nullable();
             $table->foreign('reviewee_id')->references('id')->on('users');
             $table->unsignedBigInteger('submission_id');

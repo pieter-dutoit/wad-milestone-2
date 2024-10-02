@@ -9,3 +9,4 @@
 @endsection
 
 @section('content')
+@endsection

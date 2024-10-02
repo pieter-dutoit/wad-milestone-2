@@ -37,12 +37,12 @@ class User extends Authenticatable
 
     function submissions()
     {
-        return $this->hasMany(Submission::class);
+        return $this->hasMany(Submission::class, 'student_id');
     }
 
     function reviews()
     {
-        return $this->hasMany(Review::class);
+        return $this->hasMany(Review::class, 'reviewee_id');
     }
 
     function courses()

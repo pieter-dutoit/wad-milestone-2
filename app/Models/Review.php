@@ -12,15 +12,16 @@ class Review extends Model
         'reviewee_id',
         'submission_id',
         'text',
-        'date_submitted',
-        'reviewee_verified'
+        'complete',
+        'unavailable',
+        'reported'
     ];
 
     function submission()
     {
         return $this->belongsTo(Submission::class);
     }
-    function user()
+    function reviewee()
     {
         return $this->belongsTo(User::class);
     }

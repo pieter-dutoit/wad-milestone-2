@@ -82,7 +82,7 @@ class ReviewsTableSeeder extends Seeder
                             ->first()
                             ->id;
                         foreach ($group as $reviewee) {
-                            if ($reviewee->id != $submissionID) {
+                            if ($reviewee->user_id != $reviewer->user_id) {
                                 Review::create([
                                     'reviewee_id' => $reviewee->user_id,
                                     'submission_id' => $submissionID

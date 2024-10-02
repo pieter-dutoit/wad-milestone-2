@@ -45,7 +45,14 @@
     <ul>
         @forelse ($course->assessments as $assessment)
             <li>
-                <a href="{{ url('assessments', [$assessment->id]) }}">{{ $assessment->title }}</a>
+                @if (Auth::user()->role->role == 'teacher')
+                    <a href="{{ url('assessments', [$assessment->id]) }}">{{ $assessment->title }}</a>
+                @else
+                    <a
+                        href="{{ url('submissions', [$assessment->submissions->where('student_id', Auth::user()->id)->first()->id]) }}/edit">{{ $assessment->title }}
+                    </a>
+                @endif
+
                 <p>Due date: {{ $assessment->due_date }}</p>
             </li>
         @empty

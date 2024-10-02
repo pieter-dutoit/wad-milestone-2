@@ -11,6 +11,7 @@ class Submission extends Model
     protected $fillable = [
         'assessment_id',
         'student_id',
+        'date_submitted',
         'score'
     ];
 

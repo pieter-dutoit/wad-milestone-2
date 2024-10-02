@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('submissions', function (Blueprint $table) {
             $table->id();
             $table->integer('score')->nullable();
+            $table->dateTime('date_submitted')->nullable();
             $table->unsignedBigInteger('assessment_id');
             $table->foreign('assessment_id')->references('id')->on('assessments');
             $table->unsignedBigInteger('student_id');
