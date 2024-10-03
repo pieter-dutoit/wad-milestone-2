@@ -30,7 +30,7 @@ class AuthenticatedSessionController extends Controller
 
         if (Auth::attempt($credentials)) {
             // Authentication passed...
-            return redirect()->intended('enrolments.index');
+            return redirect()->intended(route('enrolments.index', absolute: false));
         } else {
             // Based on error handling in ConfirmablePasswordController
             throw ValidationException::withMessages([

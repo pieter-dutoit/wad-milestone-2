@@ -1,3 +1,180 @@
+:root {
+    --theme-primary-color: #ff6600;
+    --theme-contrast-color: #00465c;
+}
+
+ul {
+    list-style: none;
+}
+
+ul.list-horisontal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: #ffffff;
+}
+
+main,
+header {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+header p {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+main {
+    margin: 3rem 0;
+}
+
+h1 {
+    font-size: 2rem;
+    color: var(--theme-primary-color);
+}
+
+.btn-dark {
+    background-color: var(--theme-contrast-color);
+    border-color: var(--theme-contrast-color);
+}
+
+.btn-primary {
+    background-color: var(--theme-primary-color);
+    border-color: var(--theme-primary-color);
+}
+
+h2 {
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--theme-contrast-color);
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--theme-contrast-color);
+}
+
+h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--theme-contrast-color);
+}
+
+h5 {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--theme-contrast-color);
+}
+
+.row-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-group {
+    align-self: baseline;
+    margin: 2rem 0 0;
+}
+
+.list-group li {
+    background-color: var(--theme-contrast-color);
+    color: #fff;
+}
+
+.table-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    border: 0.1rem solid #eee;
+    box-shadow: 0.1rem 0.1rem 0.5rem 0.1rem rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+}
+
+.table-card hr {
+    border-width: 0.2rem;
+    border-color: var(--theme-primary-color);
+}
+
+.table-card p {
+    font-size: 1rem;
+    opacity: 0.7;
+}
+
+.table-card ul {
+    margin: 0;
+    padding: 0;
+}
+
+.table-card form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-width: 40rem;
+}
+
+.table-card form .input-wrapper {
+    margin: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-card form button {
+    margin-top: 2rem;
+}
+
+.table-card form li {
+    list-style: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.table-card nav {
+    display: flex;
+    justify-content: center;
+}
+
+.table-card nav ul {
+    display: flex;
+    align-items: center;
+}
+
+.table-card nav ul li:first-child,
+.table-card nav ul li:last-child {
+    margin: 0 1rem;
+}
+
+.table-card .pages {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Styling to hide/display review content based on checkbox selections */
+
 .no-student-teacher_assign > input,
 .no-student-teacher_assign > label,
 .choose-other-student {
@@ -27,6 +204,13 @@
     display: none;
 }
 
+.absent-student-teacher_assign
+    > input:not(:checked)
+    ~ .no-student-teacher_assign
+    select {
+    pointer-events: none;
+}
+
 .absent-student-student_select > input,
 .absent-student-student_select > label,
 .absent-student-student_select .choose-other-student {
@@ -35,4 +219,33 @@
 
 .no-student-student_select > input:checked ~ .review-inputs {
     display: none;
+}
+
+.no-student {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.choose-other-student {
+    width: 100%;
+    margin: 1rem 0;
+    font-weight: 600;
+    color: var(--theme-primary-color);
+}
+
+.review-group {
+    width: 100%;
+    border: 0.1rem solid var(--theme-contrast-color);
+    border-radius: 1rem;
+    padding: 0.8rem 1rem;
+    margin: 0.5rem 0;
+}
+
+.review-group textarea {
+    width: 100%;
+}
+
+.review-inputs {
+    margin-top: 1rem;
+    width: 100%;
 }

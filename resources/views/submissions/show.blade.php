@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    View Peer Review Submission
+    View Peer Review Assessments
 @endsection
 
 @section('description')

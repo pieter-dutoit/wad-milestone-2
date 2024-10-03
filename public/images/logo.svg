@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="5.4136529mm"
+   height="4.7313476mm"
+   viewBox="0 0 5.4136529 4.7313476"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     transform="translate(-51.930045,-144.14116)">
+    <g
+       id="g6"
+       transform="matrix(0.33336961,0,0,0.33336961,34.618146,99.24294)">
+      <circle
+         style="fill:#ffffff;fill-opacity:1;stroke:#ff6600;stroke-width:0.992569;stroke-dasharray:none;stroke-opacity:1"
+         id="path4"
+         cx="60.049641"
+         cy="141.77626"
+         r="4.5645695" />
+      <g
+         id="g5"
+         transform="matrix(0.23914194,0,0,0.23914194,48.115131,117.42314)">
+        <g
+           id="g4">
+          <rect
+             style="fill:#ffffff;stroke:#ff6600;stroke-width:1.5887"
+             id="rect1"
+             width="25.934162"
+             height="30.820303"
+             x="16.746861"
+             y="99.894577"
+             ry="6.2016468" />
+          <g
+             id="g2"
+             transform="matrix(0.85002475,0,0,0.85002475,-17.174269,-0.64727462)">
+            <path
+               style="fill:none;stroke:#ff6600;stroke-width:1.869"
+               d="m 45.654288,130.99354 h 19.01341"
+               id="path1" />
+            <path
+               style="fill:none;stroke:#ff6600;stroke-width:1.869"
+               d="m 45.654288,135.81936 h 19.01341"
+               id="path1-9" />
+            <path
+               style="fill:none;stroke:#ff6600;stroke-width:1.869"
+               d="m 45.654288,141.37561 h 19.01341"
+               id="path1-9-2" />
+            <path
+               style="fill:none;stroke:#ff6600;stroke-width:1.869"
+               d="m 45.654288,147.26349 h 19.01341"
+               id="path1-9-2-9" />
+          </g>
+        </g>
+        <g
+           id="g3"
+           transform="matrix(1.0367515,0,0,1.0367515,2.4260066,-20.329844)">
+          <circle
+             style="fill:#ff6600;fill-opacity:1;stroke:#ff6600;stroke-width:1.869;stroke-opacity:1"
+             id="path3"
+             cx="32.278576"
+             cy="122.70281"
+             r="10.833221" />
+          <path
+             style="fill:none;stroke:#ffffff;stroke-width:2.24579"
+             d="m 23.983807,123.09621 4.914672,5.84446 10.75914,-11.55611"
+             id="path2" />
+        </g>
+      </g>
+      <g
+         id="g5-3"
+         transform="matrix(0.23914194,0,0,0.23914194,56.668645,112.03751)">
+        <g
+           id="g4-6">
+          <rect
+             style="fill:#ffffff;stroke:#ff6600;stroke-width:1.5887"
+             id="rect1-5"
+             width="25.934162"
+             height="30.820303"
+             x="16.746861"
+             y="99.894577"
+             ry="6.2016468" />
+          <g
+             id="g2-9"
+             transform="matrix(0.85002475,0,0,0.85002475,-17.174269,-0.64727462)">
+            <path
+               style="fill:none;stroke:#ff6600;stroke-width:1.869"
+               d="m 45.654288,130.99354 h 19.01341"
+               id="path1-5" />
+            <path
+               style="fill:none;stroke:#ff6600;stroke-width:1.869"
+               d="m 45.654288,135.81936 h 19.01341"
+               id="path1-9-4" />
+            <path
+               style="fill:none;stroke:#ff6600;stroke-width:1.869"
+               d="m 45.654288,141.37561 h 19.01341"
+               id="path1-9-2-91" />
+            <path
+               style="fill:none;stroke:#ff6600;stroke-width:1.869"
+               d="m 45.654288,147.26349 h 19.01341"
+               id="path1-9-2-9-7" />
+          </g>
+        </g>
+        <g
+           id="g3-5"
+           transform="matrix(1.0367515,0,0,1.0367515,2.4260066,-20.329844)">
+          <circle
+             style="fill:#ff6600;fill-opacity:1;stroke:#ff6600;stroke-width:1.869;stroke-opacity:1"
+             id="path3-5"
+             cx="32.278576"
+             cy="122.70281"
+             r="10.833221" />
+          <path
+             style="fill:none;stroke:#ffffff;stroke-width:2.24579"
+             d="m 23.983807,123.09621 4.914672,5.84446 10.75914,-11.55611"
+             id="path2-4" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

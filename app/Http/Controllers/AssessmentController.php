@@ -165,10 +165,10 @@ class AssessmentController extends Controller
             }
         }
 
-        if (!$canViewPage) {
-            session()->flash('warning', 'You need to be a course teacher to view this assessment.');
-            return redirect(route('enrolments.index'));
-        }
+        // if (!$canViewPage) {
+        //     session()->flash('warning', 'You do not have permission to view that page.');
+        //     return redirect(route('enrolments.index'));
+        // }
 
         // lock for editing if not yet any
         $submittedReviewCount = $assessment->submissions->where('date_submitted', '!=', null)->count();
@@ -179,7 +179,9 @@ class AssessmentController extends Controller
             ->with('students', $students)
             ->with('submittedReviewCount', $submittedReviewCount)
             ->with('prevPage', $page > 1 ? $page - 1 : 1)
-            ->with('nextPage', $page < $numPages ? $page + 1 : $numPages);
+            ->with('nextPage', $page < $numPages ? $page + 1 : $numPages)
+            ->with('page', $page)
+            ->with('numPages', $numPages);
     }
 
     /**

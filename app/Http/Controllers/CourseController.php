@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Enrolment;
 use App\Models\Workshop;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -38,6 +39,8 @@ class CourseController extends Controller
      */
     public function show(string $id)
     {
+        // Role
+        $isTeacher = Auth::user()->role->role == 'teacher';
         // Find course, teacher, workshop.
         $course = Course::find($id);
         $teachers = $course->users->where('role.role', 'teacher')->unique();
@@ -58,7 +61,10 @@ class CourseController extends Controller
                 'workshops' => $teacherWorkshops
             ];
         }
-        return view('courses.show')->with('course', $course)->with('teachers', $staff);
+        return view('courses.show')
+            ->with('course', $course)
+            ->with('teachers', $staff)
+            ->with('isTeacher', $isTeacher);
     }
 
     /**
