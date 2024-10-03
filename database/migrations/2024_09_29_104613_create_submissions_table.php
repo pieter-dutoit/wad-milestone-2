@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('score')->nullable();
             $table->dateTime('date_submitted')->nullable();
+            $table->integer('group_num')->nullable();
             $table->unsignedBigInteger('assessment_id');
             $table->foreign('assessment_id')->references('id')->on('assessments');
             $table->unsignedBigInteger('student_id');

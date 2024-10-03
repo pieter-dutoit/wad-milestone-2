@@ -12,7 +12,8 @@ class Submission extends Model
         'assessment_id',
         'student_id',
         'date_submitted',
-        'score'
+        'score',
+        'group_num'
     ];
 
     function assessment()

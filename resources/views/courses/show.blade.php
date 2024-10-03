@@ -62,54 +62,118 @@
 
 
 
-    {{-- Assessments table --}}
-    <div class='table-card'>
-        <div class='row-between'>
-            <h4>Peer Review Assessments</h4>
-            @if ($isTeacher)
+    {{-- Teachers: all assignments for this course --}}
+    @if ($isTeacher)
+        <div class='table-card'>
+            <div class='row-between'>
+                <h4>Peer Review Assessments</h4>
                 <a class="btn btn-dark" href="{{ url("assessments/create?course=$course->id") }}">Create assessment</a>
-            @endif
-        </div>
+            </div>
 
-        <p>
-            @if ($isTeacher)
-                Select a assessment to view student submissions, or create a new assessment.
-            @else
-                Complete each assignment before the displayed due date.
-            @endif
-        </p>
+            <p>
+                Create a new assessment, or select an assessment to view student submissions
+            </p>
 
-        <hr>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Due Date</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($course->assessments as $index => $assessment)
+            <hr>
+            <table class="table">
+                <thead>
                     <tr>
-                        <th scope="row">{{ $index + 1 }}</th>
-                        <td>
-                            @if ($isTeacher)
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Due Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($assessments as $index => $assessment)
+                        <tr>
+                            <th scope="row">{{ $index + 1 }}</th>
+                            <td>
                                 <a href="{{ url('assessments', [$assessment->id]) }}">{{ $assessment->title }}</a>
-                            @else
-                                <a
-                                    href="{{ url('submissions', [$assessment->submissions->where('student_id', Auth::user()->id)->first()->id]) }}/edit">{{ $assessment->title }}
-                                </a>
-                            @endif
-                        </td>
-                        <td>{{ $assessment->due_date }}</td>
-                    </tr>
-                @empty
+                            </td>
+                            <td>{{ $assessment->due_date }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan='3'>There are no assessments for this course.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    @endif
+
+
+    {{-- Students submissions for this course --}}
+    @if (!$isTeacher)
+        <div class='table-card'>
+            <div class='row-between'>
+                <h4>Peer Review Assessments</h4>
+            </div>
+            <p>
+                Complete each assignment before the displayed due date.
+            </p>
+
+            <hr>
+            <table class="table">
+                <thead>
                     <tr>
-                        <td colspan='4'>There are no assessments for this course.</td>
+                        <th scope="col">Name</th>
+                        <th scope="col">Group</th>
+                        <th scope="col">Due Date</th>
+                        <th></th>
+                        <th></th>
                     </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @forelse ($assessments as $assessment)
+                        <tr>
+                            <td>
+                                {{ $assessment->assessment->title }}
+                            </td>
+                            <td>
+                                @if ($assessment->group_num)
+                                    {{ $assessment->group_num }}
+                                @else
+                                    --
+                                @endif
+                            </td>
+                            <td>{{ $assessment->assessment->due_date }}</td>
+                            <td>
+
+                                @if ($assessment->date_submitted != null)
+                                    <em>Submitted</em>
+                                @else
+                                @endif
+
+                            </td>
+                            <td>
+                                @if ($assessment->date_submitted != null)
+                                    <a href="{{ url('submissions', [$assessment->id]) }}">
+                                        @if ($isTeacher)
+                                            View & Mark
+                                        @else
+                                            View submission
+                                        @endif
+                                    </a>
+                                @else
+                                    <a href="{{ url('submissions', [$assessment->id]) }}/edit">
+                                        @if ($isTeacher)
+                                            View & Mark
+                                        @else
+                                            View assessment
+                                        @endif
+                                    </a>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan='4'>There are no assessments for this course.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    @endif
+
 @endsection

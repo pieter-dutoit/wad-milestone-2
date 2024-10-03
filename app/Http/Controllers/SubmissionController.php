@@ -42,7 +42,16 @@ class SubmissionController extends Controller
     public function show(string $id)
     {
         $submission = Submission::find($id);
-        return view('submissions.show')->with('submission', $submission);
+
+        // Reviews received by student:
+        $reviewsReceived = $submission->student->reviews
+            ->where('complete',  true)
+            ->where('submission.assessment_id', $submission->assessment_id)
+            ->where('submission.id', '!=', $submission->id);
+
+        return view('submissions.show')
+            ->with('reviewsReceived', $reviewsReceived)
+            ->with('submission', $submission);
     }
 
     /**
@@ -59,7 +68,7 @@ class SubmissionController extends Controller
         $current_date = new DateTime();
         $isLate = $due_date < $current_date;
 
-        // Hidden review count:
+        // Reviews received by student:
         $reviewsReceived = $submission->student->reviews
             ->where('complete',  true)
             ->where('submission.assessment_id', $submission->assessment_id)
@@ -139,7 +148,8 @@ class SubmissionController extends Controller
                 if (in_array($review_num, $unavailableReviews)) {
                     // Review was marked as not having anyone available to review.
                     $groupedReviews[$review_num]['unavailable'] = true;
-                    $groupedReviews[$review_num]['text'] = 'There were no reviewees available.';
+                    $groupedReviews[$review_num]['text'] = 'There were no reviewees available for review.';
+                    $groupedReviews[$review_num]['reviewee_id'] = null;
                     continue;
                 }
 

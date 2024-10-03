@@ -25,4 +25,9 @@ class Course extends Model
     {
         return $this->belongsToMany(Workshop::class, 'enrolments')->withPivot('workshop_id', 'user_id');
     }
+    // https://laravel.com/docs/11.x/eloquent-relationships#has-many-through
+    public function submissions()
+    {
+        return $this->hasManyThrough(Submission::class, Assessment::class);
+    }
 }

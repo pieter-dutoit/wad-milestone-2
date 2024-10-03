@@ -74,18 +74,24 @@ class ReviewsTableSeeder extends Seeder
                 }
 
                 // Create review based on groups
-                foreach ($allGroups as $group) {
+                foreach ($allGroups as $index => $group) {
                     foreach ($group as $reviewer) {
-                        $submissionID = Submission::where('student_id', $reviewer->user_id)
+                        $submission = Submission::where('student_id', $reviewer->user_id)
                             ->where('assessment_id', $assessment->id)
                             ->get()
-                            ->first()
-                            ->id;
+                            ->first();
+
+                        // Assign a group number
+                        $submission->update([
+                            'group_num' => $index + 1
+                        ]);
+                        $submission->save();
+
                         foreach ($group as $reviewee) {
                             if ($reviewee->user_id != $reviewer->user_id) {
                                 Review::create([
                                     'reviewee_id' => $reviewee->user_id,
-                                    'submission_id' => $submissionID
+                                    'submission_id' => $submission->id
                                 ]);
                             }
                         }

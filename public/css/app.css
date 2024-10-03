@@ -175,49 +175,7 @@ h5 {
 
 /* Styling to hide/display review content based on checkbox selections */
 
-.no-student-teacher_assign > input,
-.no-student-teacher_assign > label,
-.choose-other-student {
-    display: none;
-}
-
-.absent-student-teacher_assign
-    > input:checked
-    ~ .no-student-teacher_assign
-    > input,
-.absent-student-teacher_assign
-    > input:checked
-    ~ .no-student-teacher_assign
-    > label,
-.absent-student-teacher_assign
-    > input:checked
-    ~ .no-student-teacher_assign
-    > .choose-other-student {
-    display: block;
-}
-
-.absent-student-teacher_assign
-    > input:checked
-    ~ .no-student-teacher_assign
-    > input:checked
-    ~ .review-inputs {
-    display: none;
-}
-
-.absent-student-teacher_assign
-    > input:not(:checked)
-    ~ .no-student-teacher_assign
-    select {
-    pointer-events: none;
-}
-
-.absent-student-student_select > input,
-.absent-student-student_select > label,
-.absent-student-student_select .choose-other-student {
-    display: none;
-}
-
-.no-student-student_select > input:checked ~ .review-inputs {
+.student_unavailable_check:checked ~ .review-inputs {
     display: none;
 }
 
@@ -248,4 +206,15 @@ h5 {
 .review-inputs {
     margin-top: 1rem;
     width: 100%;
+}
+
+.review-summary {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-summary .review-summary-text {
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--theme-contrast-color);
 }

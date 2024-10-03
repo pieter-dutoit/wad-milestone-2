@@ -4,6 +4,7 @@ use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrolmentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SubmissionController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,11 +49,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/assessments', [AssessmentController::class, 'store'])->middleware('role:teacher');
     Route::get('/assessments/{id}', [AssessmentController::class, 'show'])->middleware('role:teacher');
     Route::get('/assessments/{id}/edit', [AssessmentController::class, 'edit'])->middleware('role:teacher');
+    Route::put('/assessments/{id}', [AssessmentController::class, 'update'])->middleware('role:teacher');
 
     // Submission Routes
     Route::get('/submissions/{id}', [SubmissionController::class, 'show'])->middleware('role:student');
     Route::get('/submissions/{id}/edit', [SubmissionController::class, 'edit'])->middleware('role:student,teacher');
     Route::put('/submissions/{id}', [SubmissionController::class, 'update'])->middleware('role:student,teacher');
+
+    // Review Routes
+    Route::put('/reviews/{id}', [ReviewController::class, 'report'])->middleware('role:student');
 });
 
 require __DIR__ . '/auth.php';

@@ -61,8 +61,14 @@ class CourseController extends Controller
                 'workshops' => $teacherWorkshops
             ];
         }
+
+        $assessments = $isTeacher
+            ? $course->assessments
+            : $course->submissions->where('student_id', Auth::user()->id);
+
         return view('courses.show')
             ->with('course', $course)
+            ->with('assessments', $assessments)
             ->with('teachers', $staff)
             ->with('isTeacher', $isTeacher);
     }

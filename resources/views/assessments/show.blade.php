@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    View Peer Review Assessment
+    Peer Review Assessment Details
 @endsection
 
 @section('description')
@@ -25,7 +25,8 @@
                     <td>{{ $assessment->instruction }}</td>
                 <tr>
                     <th scope="col">Type</th>
-                    <td>{{ $assessment->type->type }}</td>
+                    <td>{{ ['teacher_assign' => 'Teacher assign', 'student_select' => 'Student select'][$assessment->type->type] }}
+                    </td>
                 </tr>
                 <tr>
                     <th scope="col">Max Score</th>
@@ -44,41 +45,50 @@
         </table>
     </div>
 
+
+    {{-- View list of students assignments/submissions --}}
     <div class='table-card'>
         <h4>Students / Reviewers</h4>
         <hr>
-
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">S Number</th>
+                    <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Num Reviews Submitted</th>
-                    <th scope="col">Num Reviews Received</th>
+                    <th scope="col">Workshop</th>
+                    <th scope="col">Reviews Submitted</th>
+                    <th scope="col">Reviews Received</th>
                     <th scope="col">Score</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($students as $student)
+                @forelse ($submissions as $index => $submission)
                     <tr>
-                        <th scope="row">{{ $student->s_number }}</th>
+                        <th scope="row">{{ $index + 1 }}</th>
                         <td>
-                            {{ $student->name }}
+                            {{ $submission->student->name }}
                         </td>
                         <td>
-                            {{ $student->submissions->where('assessment_id', $assessment->id)->first()->reviews->where('complete', true)->count() }}
+                            <em style="white-space: nowrap; font-size: 13px;">
+                                {{ $submission->student->enrolments->where('course_id', $submission->assessment->course_id)->first()->workshop->location }}
+                                @isset($submission->group_num)
+                                    | Group {{ $submission->group_num }}
+                                @endisset
+                            </em>
                         </td>
                         <td>
-                            {{ $student->reviews->where('complete', true)->where('submission.assessment_id', $assessment->id)->where('submission.assessment.id', $assessment->id)->count() }}
+                            {{ $submission->reviews->where('complete', true)->count() }}
                         </td>
                         <td>
-                            {{ $student->submissions->where('assessment_id', $assessment->id)->first()->score ?? '-' }} /
+                            {{ $submission->student->reviews->where('submission.assessment.id', $assessment->id)->where('complete', true)->count() }}
+                        </td>
+                        <td>
+                            {{ $submission->score ?? '-' }} /
                             {{ $assessment->max_score }}
                         </td>
                         <td>
-                            <a
-                                href="{{ url('submissions/' . $student->submissions->where('assessment_id', $assessment->id)->first()->id . '/edit') }}">
+                            <a href="{{ url('submissions/' . $submission->id . '/edit') }}">
                                 View details
                             </a>
                         </td>
