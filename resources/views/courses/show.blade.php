@@ -9,7 +9,6 @@
 @endsection
 
 @section('content')
-
     <h2>{{ $course->course_name }}, {{ $course->course_code }}</h2>
 
     {{-- Teachers table --}}
@@ -31,7 +30,6 @@
                         <td>{{ $teacher->name }}</h5>
 
                         <td>
-
                             @foreach ($teacher->enrolments->where('course_id', $course->id) as $enrolment)
                                 {{ $enrolment->workshop->location }}, {{ $enrolment->workshop->day }}
                             @endforeach

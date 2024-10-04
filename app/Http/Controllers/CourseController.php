@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Enrolment;
-use App\Models\Workshop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

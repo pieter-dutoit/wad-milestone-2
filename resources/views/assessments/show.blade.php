@@ -59,7 +59,6 @@
                     <th scope="col">Reviews Submitted</th>
                     <th scope="col">Reviews Received</th>
                     <th scope="col">Score</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -67,8 +66,11 @@
                     <tr>
                         <th scope="row">{{ $index + 1 }}</th>
                         <td>
-                            {{ $submission->student->name }}
+                            <a href="{{ url('submissions/' . $submission->id . '/edit') }}">
+                                {{ $submission->student->name }}
+                            </a>
                         </td>
+
                         <td>
                             <em style="white-space: nowrap; font-size: 13px;">
                                 {{ $submission->student->enrolments->where('course_id', $submission->assessment->course_id)->first()->workshop->location }}
@@ -86,11 +88,6 @@
                         <td>
                             {{ $submission->score ?? '-' }} /
                             {{ $assessment->max_score }}
-                        </td>
-                        <td>
-                            <a href="{{ url('submissions/' . $submission->id . '/edit') }}">
-                                View details
-                            </a>
                         </td>
                     </tr>
                 @empty
