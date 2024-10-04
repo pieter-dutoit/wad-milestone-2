@@ -109,7 +109,7 @@
         {
             "title": "Week 1 Peer Review",
             "instruction": "Complete this peer review before the due date.",
-            "due_date": "2024-10-25",
+            "due_date": "2024-10-25 23:59:00",
             "num_reviews": 3,
             "max_score": 100,
             "type": "student_select"
@@ -117,7 +117,7 @@
         {
             "title": "Week 2 Peer Review",
             "instruction": "Complete this peer review before the due date.",
-            "due_date": "2024-12-01",
+            "due_date": "2024-12-01 23:59:00",
             "num_reviews": 2,
             "max_score": 2,
             "type": "teacher_assign"

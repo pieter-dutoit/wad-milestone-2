@@ -105,6 +105,9 @@
         @if (count($reviewsReceived) > 0)
             <ul class="review-summary">
                 @forelse ($reviewsReceived as $review)
+                    <li>
+                        <h5>Review</h5>
+                    </li>
                     <li><strong>Reviewer name:</strong> {{ $review->submission->student->name }} </li>
                     <li><strong>Student number:</strong> {{ $review->submission->student->s_number }} </li>
                     <li><strong>Review text:</strong></li>

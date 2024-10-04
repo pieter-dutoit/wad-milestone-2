@@ -6,6 +6,7 @@ use App\Models\Assessment;
 use App\Models\Enrolment;
 use App\Models\Review;
 use App\Models\Submission;
+use DateTime;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,6 +18,16 @@ class ReviewsTableSeeder extends Seeder
     public function run(): void
     {
         $assessments = Assessment::all();
+
+        $stub_reviews = [
+            'Student was well prepared and presentation was clear. All work completed. Made some mistakes but knows how to correct them',
+            'Great job, keep up the good work!',
+            'Some tasks were not completed, but overall okay. Just needs to review the slides.',
+            'Code was a bit hard to read. Can make better use of indenting and comments. Otherwise good presentation.',
+            'Didnt explain how all the features were implemented, just showed the UI, bit it seemed to work okay.',
+            'Went above and beyond !!',
+            'Great work I have no feedback.'
+        ];
 
         foreach ($assessments as $assessment) {
             // $type = $assessment->type()->get()->first()->type;
@@ -75,24 +86,42 @@ class ReviewsTableSeeder extends Seeder
 
                 // Create review based on groups
                 foreach ($allGroups as $index => $group) {
-                    foreach ($group as $reviewer) {
+                    foreach ($group as $reviewerIndex => $reviewer) {
                         $submission = Submission::where('student_id', $reviewer->user_id)
                             ->where('assessment_id', $assessment->id)
                             ->get()
                             ->first();
 
+                        $completed = $index == 0;
+                        $marked = $completed && $reviewerIndex % 2 == 0;
+
+                        $subm = [
+                            'group_num' => $index + 1,
+                        ];
+
+                        if ($completed) {
+                            $subm['date_submitted'] = new DateTime();
+                        }
+
+                        if ($marked && $marked) {
+                            $subm['score'] = rand(1, $assessment->max_score);
+                        }
+
                         // Assign a group number
-                        $submission->update([
-                            'group_num' => $index + 1
-                        ]);
+                        $submission->update($subm);
                         $submission->save();
 
                         foreach ($group as $reviewee) {
                             if ($reviewee->user_id != $reviewer->user_id) {
-                                Review::create([
+                                $rev = [
                                     'reviewee_id' => $reviewee->user_id,
                                     'submission_id' => $submission->id
-                                ]);
+                                ];
+                                if ($completed) {
+                                    $rev['complete'] = true;
+                                    $rev['text'] = $stub_reviews[rand(0, 6)];
+                                }
+                                Review::create($rev);
                             }
                         }
                     }

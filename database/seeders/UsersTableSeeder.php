@@ -26,6 +26,13 @@ class UsersTableSeeder extends Seeder
                 'password' => bcrypt('Admin123'),
             ],
             [
+                'name' => "Jen",
+                's_number' => "s12321",
+                'role_id' => $teacherRoleID,
+                'email' => 'admin@12321admin.com',
+                'password' => bcrypt('Admin123'),
+            ],
+            [
                 'name' => "Benny",
                 's_number' => "s123446",
                 'role_id' => $studentRoleID,

@@ -21,7 +21,7 @@ class AssessmentsTableSeeder extends Seeder
         foreach ($types as $index => $type) {
             Assessment::create(
                 [
-                    'title' => "Week $index Peer Review",
+                    'title' => "Week " . $index + 1 . " Peer Review",
                     'instruction' => 'Lorem ipsum',
                     'due_date' => '2024-11-11 23:59:00',
                     'num_reviews' => 2,

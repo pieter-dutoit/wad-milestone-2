@@ -19,15 +19,13 @@ class EnrolmentsTableSeeder extends Seeder
         $teacherRole = Role::where('role', 'teacher')->first();
         $studentRole = Role::where('role', 'student')->first();
         $students = $studentRole->users()->limit(12)->get();
-        $teacher = $teacherRole->users()->first();
+        $teachers = $teacherRole->users()->get();
 
         $workshops = Workshop::limit(4)->get();
-        $courses = Course::limit(2)->get();
+        $courses = Course::limit(3)->get();
 
         foreach ($courses as $course) {
-
             foreach ($students as $index => $student) {
-
                 Enrolment::create(
                     [
                         'user_id' => $student->id,
@@ -37,31 +35,31 @@ class EnrolmentsTableSeeder extends Seeder
                 );
             }
         }
-        $teacherEnrolments = [
-            [
-                'user_id' => $teacher->id,
-                'course_id' => $courses[0]->id,
-                'workshop_id' => $workshops[0]->id,
-            ],
-            [
-                'user_id' => $teacher->id,
-                'course_id' => $courses[0]->id,
-                'workshop_id' => $workshops[1]->id,
-            ],
-            [
-                'user_id' => $teacher->id,
-                'course_id' => $courses[1]->id,
-                'workshop_id' => $workshops[2]->id,
-            ],
-            [
-                'user_id' => $teacher->id,
-                'course_id' => $courses[1]->id,
-                'workshop_id' => $workshops[3]->id,
-            ]
-        ];
 
-        foreach ($teacherEnrolments as $enrolment) {
-            Enrolment::create($enrolment);
+        foreach ($teachers as $index => $teacher) {
+            $teacherEnrolments = [
+                [
+                    'user_id' => $teacher->id,
+                    'course_id' => $courses[$index + 0]->id,
+                    'workshop_id' => $workshops[0]->id,
+                ],
+                [
+                    'user_id' => $teacher->id,
+                    'course_id' => $courses[$index + 0]->id,
+                    'workshop_id' => $workshops[1]->id,
+                ],
+                [
+                    'user_id' => $teacher->id,
+                    'course_id' => $courses[$index + 1]->id,
+                    'workshop_id' => $workshops[2]->id,
+                ],
+                [
+                    'user_id' => $teacher->id,
+                    'course_id' => $courses[$index + 1]->id,
+                    'workshop_id' => $workshops[3]->id,
+                ]
+            ];
+            Enrolment::insert($teacherEnrolments);
         }
     }
 }

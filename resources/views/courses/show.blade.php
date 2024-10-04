@@ -31,7 +31,7 @@
 
                         <td>
                             @foreach ($teacher->enrolments->where('course_id', $course->id) as $enrolment)
-                                {{ $enrolment->workshop->location }}, {{ $enrolment->workshop->day }}
+                                {{ $enrolment->workshop->location }}, {{ $enrolment->workshop->day }}{{ '; ' }}
                             @endforeach
                         </td>
                     </tr>
