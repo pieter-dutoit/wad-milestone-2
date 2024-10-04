@@ -1,0 +1,126 @@
+{
+    "course": {
+        "course_code": "7302ICT",
+        "course_name": "Database Design"
+    },
+    "teachers": [
+        {
+            "name": "Jane Doe",
+            "email": "teacher1@test.com",
+            "s_number": "s1234567",
+            "workshop": "GC 40.4.23:Monday",
+            "password": "Admin123"
+        },
+        {
+            "name": "John Doe",
+            "email": "teacher2@test.com",
+            "s_number": "s12345678",
+            "workshop": "GC 40.4.23:Wednesday",
+            "password": "Admin123"
+        }
+    ],
+    "students": [
+        {
+            "name": "Ralph Fiennes",
+            "email": "test99@test.com",
+            "s_number": "s573963",
+            "workshop": "Online"
+        },
+        {
+            "name": "Maggie Smith",
+            "email": "test97@test.com",
+            "s_number": "s573964",
+            "workshop": "Online"
+        },
+        {
+            "name": "Daniel Radcliffe",
+            "email": "test96@test.com",
+            "s_number": "s573965",
+            "workshop": "Online"
+        },
+        {
+            "name": "Emma watson",
+            "email": "test95@test.com",
+            "s_number": "s573966",
+            "workshop": "Online"
+        },
+        {
+            "name": "Connor James",
+            "email": "test94@test.com",
+            "s_number": "s573967",
+            "workshop": "Online"
+        },
+        {
+            "name": "Charles Smith",
+            "email": "test93@test.com",
+            "s_number": "s573968",
+            "workshop": "Online"
+        },
+        {
+            "name": "Sophie Verbeek",
+            "email": "test92@test.com",
+            "s_number": "s573969",
+            "workshop": "GC 40.4.23:Wednesday"
+        },
+        {
+            "name": "Nicki Monk",
+            "email": "test91@test.com",
+            "s_number": "s573970",
+            "workshop": "GC 40.4.23:Monday"
+        },
+        {
+            "name": "Chardri Monk",
+            "email": "test88@test.com",
+            "s_number": "s573971",
+            "workshop": "GC 40.4.23:Monday"
+        },
+        {
+            "name": "Gary Pool",
+            "email": "test81@test.com",
+            "s_number": "s573972",
+            "workshop": "GC 40.4.23:Monday"
+        },
+        {
+            "name": "Kyle Neisius",
+            "email": "test85@test.com",
+            "s_number": "s573972",
+            "workshop": "GC 40.4.23:Monday"
+        },
+        {
+            "name": "Karin Wagner",
+            "email": "test856@test.com",
+            "s_number": "s574977",
+            "workshop": "GC 40.4.23:Monday"
+        },
+        {
+            "name": "Marc Visser",
+            "email": "test55@test.com",
+            "s_number": "s584972",
+            "workshop": "GC 40.4.23:Monday"
+        },
+        {
+            "name": "Matthew Perry",
+            "email": "test848@test.com",
+            "s_number": "s573981",
+            "workshop": "GC 40.4.23:Monday"
+        }
+    ],
+    "assessments": [
+        {
+            "title": "Week 1 Peer Review",
+            "instruction": "Complete this peer review before the due date.",
+            "due_date": "2024-10-25",
+            "num_reviews": 3,
+            "max_score": 100,
+            "type": "student_select"
+        },
+        {
+            "title": "Week 2 Peer Review",
+            "instruction": "Complete this peer review before the due date.",
+            "due_date": "2024-12-01",
+            "num_reviews": 2,
+            "max_score": 2,
+            "type": "teacher_assign"
+        }
+    ]
+}

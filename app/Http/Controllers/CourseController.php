@@ -44,32 +44,25 @@ class CourseController extends Controller
         // Find course, teacher, workshop.
         $course = Course::find($id);
         $teachers = $course->users->where('role.role', 'teacher')->unique();
-        $workshops = $course->workshops->unique();
-
-        // List of staff, and the workshops they teach.
-        $staff = [];
-
-        foreach ($teachers as $teacher) {
-            $teacherWorkshops = [];
-            foreach ($workshops as $workshop) {
-                if ($workshop->pivot->user_id == $teacher->id) {
-                    $teacherWorkshops[] = $workshop;
-                }
-            }
-            $staff[] = [
-                'teacher' => $teacher,
-                'workshops' => $teacherWorkshops
-            ];
-        }
 
         $assessments = $isTeacher
             ? $course->assessments
             : $course->submissions->where('student_id', Auth::user()->id);
 
+
+        // Permission check
+        $userId = Auth::user()->id;
+        $enrolment = Enrolment::where('course_id', $id)->where('user_id', $userId)->count();
+        if ($enrolment < 1) {
+            session()->flash('warning', 'You do not have permission to view that page.');
+            return redirect(route('enrolments.index'));
+        }
+
+
         return view('courses.show')
             ->with('course', $course)
             ->with('assessments', $assessments)
-            ->with('teachers', $staff)
+            ->with('teachers', $teachers)
             ->with('isTeacher', $isTeacher);
     }
 
