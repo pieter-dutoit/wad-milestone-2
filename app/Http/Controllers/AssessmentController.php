@@ -70,11 +70,12 @@ class AssessmentController extends Controller
             ];
         }
         Submission::insert($submissions);
-        $submissions = Submission::where('assessment_id', $assessment->id);
+        $submissions = Submission::where('assessment_id', $assessment->id)->get();
 
         if ($assessment->type->type == 'student_select') {
             // Create specified number of (blank) reviews
             foreach ($submissions as $submission) {
+
                 // Create reviews without reviewees
                 for ($i = 0; $i < $assessment->num_reviews; $i++) {
                     Review::create([
@@ -272,16 +273,18 @@ class AssessmentController extends Controller
             ];
         }
         Submission::insert($submissions);
-        $submissions = Submission::where('assessment_id', $id);
+        $submissions = Submission::where('assessment_id', $id)->get();
 
         if ($assessment->type->type == 'student_select') {
             // Create specified number of (blank) reviews
             foreach ($submissions as $submission) {
+                // Delete existing reviews to prevent duplicates
+                Review::where('submission_id', $submission->id)->delete();
                 // Create reviews without reviewees
                 for ($i = 0; $i < $assessment->num_reviews; $i++) {
-                    echo $submission->id;
                     Review::create([
                         'reviewee_id' => null,
+
                         'submission_id' => $submission->id
                     ]);
                 }
@@ -331,6 +334,8 @@ class AssessmentController extends Controller
                         'group_num' => $index + 1
                     ]);
                     $submission->save();
+
+                    Review::where('submission_id', $submission->id)->delete();
 
                     foreach ($group as $reviewee) {
                         if ($reviewee->user_id != $reviewer->user_id) {

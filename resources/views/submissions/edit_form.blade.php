@@ -249,30 +249,20 @@
         <h4>Reviews received ({{ count($reviewsReceived) }}/{{ $submission->reviews->count() }})</h4>
         <hr>
         @if (count($reviewsReceived) > 0)
-            @if ($isTeacher)
-                {{-- Teacher can see all reviews --}}
-                <ul class="review-summary">
-                    @forelse ($reviewsReceived as $review)
-                        <li><strong>Reviewer name:</strong> {{ $review->submission->student->name }} </li>
-                        <li><strong>Student number:</strong> {{ $review->submission->student->s_number }} </li>
-                        <li><strong>Review text:</strong></li>
-                        <li>{{ $review->text }}</li>
-                        @if ($review->reported)
-                            <em style="color: #ff6000">This review has been reported as a poor/low quality review.</em>
-                        @endif
-                        <li class="review-summary-text"></li>
-                    @empty
-                        <li>This student has not received any reviews.</li>
-                    @endforelse
-                </ul>
-            @else
-                {{-- Student needs to submit own reviews before they can the what they received --}}
-                <p>
-                    You have received
-                    <strong>{{ count($reviewsReceived) }}</strong>
-                    review(s)! Reveal them by submitting your own reviews.
-                </p>
-            @endif
+            <ul class="review-summary">
+                @forelse ($reviewsReceived as $review)
+                    <li><strong>Reviewer name:</strong> {{ $review->submission->student->name }} </li>
+                    <li><strong>Student number:</strong> {{ $review->submission->student->s_number }} </li>
+                    <li><strong>Review text:</strong></li>
+                    <li>{{ $review->text }}</li>
+                    @if ($review->reported)
+                        <em style="color: #ff6000">This review has been reported as a poor/low quality review.</em>
+                    @endif
+                    <li class="review-summary-text"></li>
+                @empty
+                    <li>This student has not received any reviews.</li>
+                @endforelse
+            </ul>
         @else
             <p>No reviews have been received.</p>
         @endif
