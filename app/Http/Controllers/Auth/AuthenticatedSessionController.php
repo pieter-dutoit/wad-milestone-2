@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+
+
+        $user = User::where('s_number', $request->input('s_number'))->first();
+
+        if ($user != null && $user->password == null) {
+            return redirect("register?s_number=$user->s_number");
+        }
+
         // https://laravel.com/docs/7.x/authentication#authenticating-users
         $credentials = $request->only('s_number', 'password');
 

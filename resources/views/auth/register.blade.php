@@ -1,27 +1,36 @@
 <x-guest-layout>
+    @if (isset($_REQUEST['s_number']))
+        <strong style="margin-bottom: 1rem;">
+            Welcome! Please set you password
+        </strong>
+    @endif
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" autofocus
-                autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
-                autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        @if (!isset($_REQUEST['s_number']))
+            <!-- Name -->
+            <div>
+                <x-input-label for="name" :value="__('Name')" />
+                <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')"
+                    autofocus autocomplete="name" />
+                <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            </div>
+
+            <!-- Email Address -->
+            <div class="mt-4">
+                <x-input-label for="email" :value="__('Email')" />
+                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
+                    autocomplete="username" />
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            </div>
+        @endif
 
         <!-- S Number -->
         <div class="mt-4">
             <x-input-label for="s_number" :value="__('Student Number')" />
-            <x-text-input id="s_number" class="block mt-1 w-full" type="text" name="s_number" :value="old('s_number')" />
+            <x-text-input id="s_number" class="block mt-1 w-full" type="text" name="s_number"
+                value="old('s_number')" value="{{ isset($_REQUEST['s_number']) ? $_REQUEST['s_number'] : '' }}" />
             <x-input-error :messages="$errors->get('s_number')" class="mt-2" />
         </div>
 
@@ -51,7 +60,7 @@
                 {{ __('Already registered?') }}
             </a>
 
-            <x-primary-button class="ms-4">
+            <x-primary-button class="ms-4" style="background-color: #ff6600;">
                 {{ __('Register') }}
             </x-primary-button>
         </div>

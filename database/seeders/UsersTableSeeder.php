@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
 
         $users = [
             [
-                'name' => "admin",
+                'name' => "Pieter",
                 's_number' => "s12345",
                 'role_id' => $teacherRoleID,
                 'email' => 'admin@admin.com',
@@ -61,14 +61,14 @@ class UsersTableSeeder extends Seeder
                 'password' => bcrypt('Admin123'),
             ],
             [
-                'name' => "Dylan",
+                'name' => "Mark",
                 's_number' => "s123499",
                 'role_id' => $studentRoleID,
-                'email' => 'dylan@fakelearner.com',
+                'email' => 'mark@fakelearner.com',
                 'password' => bcrypt('Admin123'),
             ],
             [
-                'name' => "Jacques Visser",
+                'name' => "Jacques",
                 's_number' => "s123464",
                 'role_id' => $studentRoleID,
                 'email' => 'eric@fakelearner.com',
