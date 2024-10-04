@@ -28,11 +28,12 @@
                 @forelse ($teachers as $index => $teacher)
                     <tr>
                         <th scope="row">{{ $index + 1 }}</th>
-                        <td>{{ $teacher['teacher']->name }}</h5>
+                        <td>{{ $teacher->name }}</h5>
 
                         <td>
-                            @foreach ($teacher['workshops'] as $workshop)
-                                {{ $workshop->location }}, {{ $workshop->day }},
+
+                            @foreach ($teacher->enrolments->where('course_id', $course->id) as $enrolment)
+                                {{ $enrolment->workshop->location }}, {{ $enrolment->workshop->day }}
                             @endforeach
                         </td>
                     </tr>

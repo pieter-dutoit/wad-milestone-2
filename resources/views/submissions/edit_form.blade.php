@@ -150,7 +150,11 @@
                                     {{ old('unavailable_' . $index + 1) == 'on' ? 'checked' : '' }} />
 
                                 <label class="list-group-item" for="unavailable_{{ $index + 1 }}">
-                                    No student available to review
+                                    @if ($submission->assessment->type->type == 'teacher_assign')
+                                        Assigned student not attending / presenting.
+                                    @else
+                                        No student available to review.
+                                    @endif
                                 </label>
 
                                 {{-- Error message --}}
@@ -169,7 +173,8 @@
                                         </label>
 
                                         <select class="form-select" name="review_{{ $index + 1 }}_student"
-                                            id="student">
+                                            id="student"
+                                            {{ $submission->assessment->type->type == 'teacher_assign' ? 'disabled' : '' }}>
                                             <option value="-1" selected>Select a student to review</option>
                                             @forelse ($peers as $peer)
                                                 <option value="{{ $peer->id }}"
@@ -229,7 +234,7 @@
                     <li><strong>Review text:</strong></li>
                     <li>{{ $review->text }}</li>
                     @if ($review->reported)
-                        <em style="color: #ff6000">This reviewee has reported this review as not being genuine.</em>
+                        <em style="color: #ff6000">This review has been reported as a poor/low quality review.</em>
                     @endif
                     <li class="review-summary-text"></li>
                 @empty
@@ -253,7 +258,7 @@
                         <li><strong>Review text:</strong></li>
                         <li>{{ $review->text }}</li>
                         @if ($review->reported)
-                            <em style="color: #ff6000">This review has been reported as non-genuine by the reviewee.</em>
+                            <em style="color: #ff6000">This review has been reported as a poor/low quality review.</em>
                         @endif
                         <li class="review-summary-text"></li>
                     @empty

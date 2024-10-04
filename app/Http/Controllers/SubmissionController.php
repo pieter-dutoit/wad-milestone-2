@@ -148,8 +148,7 @@ class SubmissionController extends Controller
                 if (in_array($review_num, $unavailableReviews)) {
                     // Review was marked as not having anyone available to review.
                     $groupedReviews[$review_num]['unavailable'] = true;
-                    $groupedReviews[$review_num]['text'] = 'There were no reviewees available for review.';
-                    $groupedReviews[$review_num]['reviewee_id'] = null;
+                    $groupedReviews[$review_num]['text'] = 'The assigned student was not present or did not present their work.';
                     continue;
                 }
 

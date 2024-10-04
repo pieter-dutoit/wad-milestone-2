@@ -109,13 +109,10 @@
                     <li><strong>Student number:</strong> {{ $review->submission->student->s_number }} </li>
                     <li><strong>Review text:</strong></li>
                     <li>{{ $review->text }}</li>
-                    <li class="review-summary-text">
-
-                    </li>
                     @if ($review->reported)
-                        <em style="color: #ff6000">This review has been reported.</em>
+                        <em style="color: #ff6000">This review has been reported as a poor/low quality review.</em>
                     @else
-                        <b>Didn't present your work to this student? Report their review as fake:</b>
+                        <b>Is this review of low quality, or perhaps fake? Report it:</b>
                         <form action="{{ url('reviews', [$review->id]) }}" method="post">
                             @csrf
                             @method('put')
@@ -124,6 +121,9 @@
                             </button>
                         </form>
                     @endif
+                    <li class="review-summary-text">
+
+                    </li>
                 @empty
                     <li>This student has not received any reviews.</li>
                 @endforelse

@@ -32,6 +32,14 @@
                     </ul>
                 </li>
 
+                @if (Auth::user()->role->role == 'teacher')
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{{ url('/uploads/create') }}">Bulk Enrolment</a>
+                    </li>
+                @endif
+
+                <li></li>
+
             </ul>
 
             @auth

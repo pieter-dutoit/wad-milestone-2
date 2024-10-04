@@ -18,7 +18,7 @@ class EnrolmentsTableSeeder extends Seeder
     {
         $teacherRole = Role::where('role', 'teacher')->first();
         $studentRole = Role::where('role', 'student')->first();
-        $students = $studentRole->users()->limit(10)->get();
+        $students = $studentRole->users()->limit(12)->get();
         $teacher = $teacherRole->users()->first();
 
         $workshops = Workshop::limit(4)->get();
